@@ -20,17 +20,19 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email');
             $table->string('phone');
-            $table->dateTime('date_of_birth');
+            $table->dateTime('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female ']);
             $table->string('address');
             $table->string('city');
-            $table->string('areaId');
+            $table->string('areaId')->default("");
             $table->string('password');
-            $table->integer('score');
-            $table->enum('privacy', ['public', 'private ']);
-            $table->enum('level', ['basic', 'premium', 'gold']);
+            $table->integer('score')->nullable();
+            $table->enum('privacy', ['public', 'private '])->nullable();
+            $table->enum('level', ['basic', 'premium', 'gold'])->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->string('account_type')->default("normal");
+            $table->string('sns_acc_id')->nullable();
         });
     }
 
