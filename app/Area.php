@@ -11,7 +11,10 @@ class Area extends Model
      *
      * @var string
      */
-    protected $table = 'my_flights';
+    protected $table = 'areas';
+
+    public $timestamps = false;
+
 
     public function users()
     {

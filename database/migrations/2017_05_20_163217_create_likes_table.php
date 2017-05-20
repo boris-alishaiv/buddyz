@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStaticTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateStaticTable extends Migration
      */
     public function up()
     {
-        Schema::create('static', function (Blueprint $table)
+        Schema::create('likes', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->string('name');
-            $table->string('content');
+            $table->integer('post_id');
+            $table->integer('user_id');
+            $table->enum('type', ['diligent', 'professional', 'devoted']);
+            $table->enum('status', ['like', 'unlike']);
             $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
@@ -30,6 +32,6 @@ class CreateStaticTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('static');
+        Schema::dropIfExists('likes');
     }
 }

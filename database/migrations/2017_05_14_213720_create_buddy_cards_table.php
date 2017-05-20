@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStaticTable extends Migration
+class CreateBuddyCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,15 @@ class CreateStaticTable extends Migration
      */
     public function up()
     {
-        Schema::create('static', function (Blueprint $table)
+        Schema::create('buddy_cards', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->string('name');
-            $table->string('content');
+            $table->integer('user_id');
+            $table->integer('category_id');
+            $table->string('description');
+            $table->integer('price');
+            $table->text('schedule');
+            $table->enum('permission', ['public', 'private'])->default("public");
             $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
@@ -30,6 +34,6 @@ class CreateStaticTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('static');
+        Schema::dropIfExists('buddy_cards');
     }
 }

@@ -41,6 +41,17 @@ class Kernel extends HttpKernel
             'bindings',
             \App\Http\Middleware\Cors::class,
         ],
+
+        'Admin' => [
+            'auth.jwt' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+            'admin' => \App\Http\Middleware\Admin::class,
+        ],
+
+        'AdminOrUser' => [
+            'auth.jwt' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+            'adminOrUser' => \App\Http\Middleware\AdminOrUser::class,
+        ],
+
     ];
 
     /**

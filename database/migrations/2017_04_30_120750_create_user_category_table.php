@@ -18,8 +18,8 @@ class CreateUserCategoryTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('category_id');
-            $table->integer('price');
             $table->enum('type', ['skill', 'interest']);
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

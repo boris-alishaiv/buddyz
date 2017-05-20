@@ -73,7 +73,6 @@ class UserController extends Controller
 
         }
 
-//        $user = JWTAuth::parseToken()->toUser();
         return response()->json([
             'tokrn' => $token
         ], 200);
@@ -127,5 +126,34 @@ class UserController extends Controller
         ], 200);
     }
 
+
+
+    public function updateUser(Request $request)
+    {
+        // TODO: get current user using auth
+        $user = User::find(1);
+
+        if (isset($request['type']))  $user->type = $request['type'];
+        if (isset($request['firstName']))  $user->first_name = $request['firstName'];
+        if (isset($request['lastName']))  $user->last_name = $request['lastName'];
+        if (isset($request['email']))  $user->email = $request['email'];
+        if (isset($request['phone']))  $user->phone = $request['phone'];
+        if (isset($request['dateOfBirth']))  $user->date_of_birth = $request['dateOfBirth'];
+        if (isset($request['gender']))  $user->gender = $request['gender'];
+        if (isset($request['address']))  $user->address = $request['address'];
+        if (isset($request['city']))  $user->city = $request['city'];
+        if (isset($request['score']))  $user->score = $request['score'];
+        if (isset($request['privacy']))  $user->privacy = $request['privacy'];
+        if (isset($request['level']))  $user->level = $request['level'];
+        $user->save();
+
+        return response()->json('successful operation',202);
+    }
+
+
+    public function uploadAvatar(Request $request)
+    {
+        
+    }
 
 }

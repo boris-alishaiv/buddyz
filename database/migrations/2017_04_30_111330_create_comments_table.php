@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->integer('user_id');
             $table->integer('post_id');
             $table->string('content');
-            $table->enum('status', ['active', 'edited', 'deleted']);
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

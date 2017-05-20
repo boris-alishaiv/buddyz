@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJobRequireTable extends Migration
+class CreateReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateJobRequireTable extends Migration
      */
     public function up()
     {
-        Schema::create('job_require', function (Blueprint $table)
+        Schema::create('reviews', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('category_id');
-            $table->string('date');
-            $table->string('description');
+            $table->integer('get_user_id');
+            $table->integer('post_user_id');
+            $table->string('content');
+            $table->integer('rating');
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateJobRequireTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_require');
+        Schema::dropIfExists('reviews');
     }
 }

@@ -17,12 +17,12 @@ class CreateMediaTable extends Migration
         {
             $table->increments('id');
             $table->integer('user_id');
-            $table->enum('type', ['profileImage', 'skillImage', 'skillVideo', 'companyLogo', 'activityImage', 'activityVideo', 'postImage', 'postVideo']);
+            $table->enum('type', ['postVideo', 'postImage', 'skillImage', 'skillVideo', 'activityImage', 'activityVideo']);
             $table->string('url');
-            $table->integer('user_category_id');
-            $table->integer('activity_id');
-            $table->integer('post_id');
-            $table->integer('company_id');
+            $table->integer('user_category_id')->nullable();
+            $table->integer('activity_id')->nullable();
+            $table->integer('post_id')->nullable();
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

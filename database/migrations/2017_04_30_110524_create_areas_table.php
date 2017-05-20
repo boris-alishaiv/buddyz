@@ -18,6 +18,7 @@ class CreateAreasTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('locations');
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
         });
     }
 

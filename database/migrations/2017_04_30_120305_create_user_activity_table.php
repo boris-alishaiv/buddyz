@@ -18,8 +18,9 @@ class CreateUserActivityTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('activity_id');
-            $table->enum('status', ['pending', 'agreed', 'decline', 'transferred', 'done']);
+            $table->enum('status', ['pending', 'agreed', 'decline', 'transferred', 'done'])->default('pending');
             $table->enum('initiated_by', ['buddy', 'privateClient', 'businessClient']);
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

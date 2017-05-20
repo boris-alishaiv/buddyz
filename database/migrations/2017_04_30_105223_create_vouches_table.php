@@ -16,8 +16,10 @@ class CreateVouchesTable extends Migration
         Schema::create('vouches', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->integer('userIdGet');
-            $table->integer('userIdPost');
+            $table->integer('user_id_get');
+            $table->integer('user_id_post');
+            $table->enum('status', ['active', 'deleted', 'oneSide', 'mutual ']);
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

@@ -70,9 +70,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Company');
     }
 
-    public function jobRequire()
+    public function buddyCards()
     {
-        return $this->hasMany('App\JobRequire');
+        return $this->hasMany('App\BuddyCard');
     }
 
     public function media()

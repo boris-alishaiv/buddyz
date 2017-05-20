@@ -11,7 +11,7 @@ class Category extends Model
      *
      * @var string
      */
-    protected $table = 'my_flights';
+    protected $table = 'categories';
 
     public function activities()
     {
@@ -20,7 +20,7 @@ class Category extends Model
 
     public function jobReuire()
     {
-        return $this->hasMany('App\JobRequire');
+        return $this->hasMany('App\BuddyCard');
     }
 
     // many to many

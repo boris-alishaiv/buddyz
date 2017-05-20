@@ -18,7 +18,8 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('content');
-            $table->enum('status', ['active', 'edited', 'deleted ']);
+            $table->integer('likes');
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class CreateUserMedalsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('medal_id');
+            $table->enum('status_in_table', ['active', 'edited', 'deleted'])->default("active");
             $table->timestamps();
         });
     }
