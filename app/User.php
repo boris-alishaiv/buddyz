@@ -37,10 +37,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // many to many
     public function activities()
     {
-        return $this->belongsToMany('App\Activity');
+        return $this->hasMany('App\Activity');
+    }
+
+    public function userActivities()
+    {
+        return $this->hasMany('App\UserActivity');
     }
 
     // many to many

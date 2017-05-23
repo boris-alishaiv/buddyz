@@ -16,9 +16,12 @@ class CategoryController extends Controller
 
     public function addCategory(Request $request)
     {
-        if (!isset($request['name']) || !isset($request['description'])){
-            return response()->json('missing parameters',400);
-        }
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'logo' => 'required',
+            'image' => 'required'
+        ]);
 
         if (Category::where('name', $request['name'])->first()){
             return response()->json('Category name already exist',405);
@@ -27,6 +30,8 @@ class CategoryController extends Controller
         $category = new Category();
         $category->name = $request['name'];
         $category->description = $request['description'];
+        $category->logo = "uploaded url";
+        $category->image = "uploaded url";
         $category->save();
 
         return response()->json([
@@ -41,7 +46,7 @@ class CategoryController extends Controller
             return response()->json($category,200);
         }
 
-        return response()->json('Category not found\',404');
+        return response()->json('Category not found',404);
     }
 
     public function updateCategory($categoryId, Request $request)
@@ -52,6 +57,8 @@ class CategoryController extends Controller
 
         if (isset($request['name']))  $category->name = $request['name'];
         if (isset($request['description'])) $category->description = $request['description'];
+        if (isset($request['logo'])) $category->logo = $request['logo'];
+        if (isset($request['image'])) $category->image = $request['image'];
         $category->save();
 
         return response()->json([

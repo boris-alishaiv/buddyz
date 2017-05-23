@@ -9,14 +9,11 @@ class MedalController extends Controller
 {
     public function getAllMedals()
     {
-        // TODO: admin only
         return response()->json(Medal::all(), 200);
     }
 
     public function addMedal(Request $request)
     {
-        // TODO: admin only
-
         if (Medal::where('name', $request['name'])->first()){
             return response()->json('Medal name already exist',405);
         }
@@ -31,8 +28,6 @@ class MedalController extends Controller
 
     public function getMedal($medalId)
     {
-        // TODO: admin only
-
         if ($medal = Medal::find($medalId)) {
             return response()->json($medal,200);
         }
@@ -42,8 +37,6 @@ class MedalController extends Controller
 
     public function updateMedal($medalId, Request $request)
     {
-        // TODO: admin only
-
         if (! $medal = Medal::find($medalId)) {
             return response()->json('Medal not found',404);
         }
@@ -58,8 +51,6 @@ class MedalController extends Controller
 
     public function deleteMedal($medalId)
     {
-        // TODO: admin only
-
         if (! $medal = Medal::find($medalId)) {
             return response()->json('Medal not found',404);
         }

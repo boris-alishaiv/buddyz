@@ -2,50 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\User;
 use App\UserCategory;
 use Illuminate\Http\Request;
 
 class UserCategoryController extends Controller
 {
-    public function getUserCategories()
+    public function getUserCategories($userId)
     {
-        return response()->json(UserCategory::all(), 200);
+        $result = [];
+        $userCategories = UserCategory::where('user_id', $userId)->get()->toArray();
+        foreach ($userCategories as $userCategory) {
+            $userCategory['category'] = Category::find($userCategory['category_id'])->toArray();
+            array_push($result, $userCategory);
+        }
+
+        return response()->json($result, 200);
     }
 
-    public function addUserCategories(Request $request)
+    public function addUserCategories(Request $request, $userId)
     {
-        if (! $user = User::find($request['userId'])) {
-            return response()->json('userId not exist',405);
+        $this->validate($request, [
+            'categoryId' => 'required',
+            'type' => 'required'
+        ]);
+
+        $user = User::find($userId);
+        if ($request['type'] == 'skill' && $user->type != 'buddy' && $user->type != 'admin') {
+            return response()->json('Invalid permission',408);
         }
 
-        if ($request['type'] == 'skill' && $user->type != 'buddy') {
-            return response()->json('skill must be added to buddy user',405);
-        }
+        $userCategory = new UserCategory();
+        $userCategory->user_id = $userId;
+        $userCategory->category_id = $request['categoryId'];
+        $userCategory->type = $request['type'];;
+        $userCategory->save();
 
-        if (UserCategory::where('user_id', $request['userId'])->where('category_id', ['categoryId'])->first()) {
-            $userCategory = new UserCategory();
-            $userCategory->user_id = $user->id;
-            $userCategory->category_id = $request['categoryId'];
-            $userCategory->type = 'skill';
-
-        }
-
-        $request['userId'];
-        $request['categoryId'];
-        $request['type'];
-
-        if (StaticModel::where('name', $request['name'])->first()){
-            return response()->json('Static name already exist',405);
-        }
-
-        $static = new StaticModel();
-        $static->name = $request['name'];
-        $static->content = $request['content'];
-        $static->save();
-
-        return response()->json('successful operation',200);
+        return response()->json([
+            'message' => "successful operation",
+            'data'    => $userCategory
+        ],200);
     }
+
 
     public function getUserCategory($userCategoryId)
     {
@@ -58,8 +57,19 @@ class UserCategoryController extends Controller
 
     public function updateUserCategory($userCategoryId, Request $request)
     {
+        if (! $userCategory = UserCategory::find($userCategoryId)) {
+            return response()->json('UserCategory not found',404);
+        }
 
+        if (isset($request['categoryId']))  $userCategory->category_id = $request['categoryId'];
+        if (isset($request['type'])) $userCategory->type = $request['type'];
+        $userCategory->save();
 
+        return response()->json(
+            [
+                'message'=> 'successful operation',
+                'data' => $userCategory
+            ],200);
     }
 
     public function deleteUserCategory($userCategoryId)
@@ -70,7 +80,6 @@ class UserCategoryController extends Controller
 
         $userCategory->delete();
         return response()->json('successful operation',202);
-
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Vouch;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -10,6 +11,114 @@ use JWTAuth;
 
 class UserController extends Controller
 {
+    public function getAllUsers()
+    {
+        $users = User::all();
+        return response()->json($users, 200);
+    }
+
+    public function uploadFile($userId)
+    {
+        return response()->json("uploadFile needs implementation", 200);
+    }
+
+    public function uploadCoverImage($userId)
+    {
+        return response()->json("uploadCoverImage needs implementation", 200);
+    }
+
+    public function uploadProfileImage($userId)
+    {
+        return response()->json("uploadProfileImage needs implementation", 200);
+    }
+
+    public function setUserAbout($userId)
+    {
+
+
+        return response()->json("setUserAbout needs implementation", 200);
+    }
+
+    public function watchProfile($userId)
+    {
+        return response()->json("watchProfile needs implementation", 200);
+    }
+
+    public function editUser($userId)
+    {
+        $user = User::find($userId);
+
+        if (isset($request['type']))  $user->type = $request['type'];
+        if (isset($request['firstName']))  $user->first_name = $request['firstName'];
+        if (isset($request['lastName']))  $user->last_name = $request['lastName'];
+        if (isset($request['email']))  $user->email = $request['email'];
+        if (isset($request['phone']))  $user->phone = $request['phone'];
+        if (isset($request['dateOfBirth']))  $user->date_of_birth = $request['dateOfBirth'];
+        if (isset($request['gender']))  $user->gender = $request['gender'];
+        if (isset($request['about']))  $user->about = $request['about'];
+        if (isset($request['address']))  $user->address = $request['address'];
+        if (isset($request['school']))  $user->school = $request['school'];
+        if (isset($request['city']))  $user->city = $request['city'];
+        if (isset($request['areaId']))  $user->area_id = $request['areaId'];
+        if (isset($request['privacy']))  $user->privacy = $request['privacy'];
+        $user->save();
+
+        return response()->json('successful operation',202);
+    }
+
+    public function deleteUser($userId)
+    {
+        if (! $user = User::find($userId)) {
+            return response()->json('User not found',404);
+        }
+
+        $user->delete();
+        return response()->json('successful operation',202);
+    }
+
+    public function getCommunity($userId)
+    {
+        $result = [];
+        $vouchedUsers = Vouch::where('user_id_post', $userId)->get(['user_id_get']);
+        $postVouches = new \stdClass();
+        $postVouches->postVouches = [];
+        $idArr = [];
+
+        foreach ($vouchedUsers as $vouchUserId) {
+            array_push($idArr, $vouchUserId->user_id_get);
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($postVouches->postVouches, $temp);
+        }
+        array_push($result, $postVouches);
+
+        $vouchedUsers = Vouch::where('user_id_get', $userId)->whereNotIn('user_id_post',$idArr)->get();
+        $getVouches = new \stdClass();
+        $getVouches->getVouches = [];
+
+        foreach ($vouchedUsers as $vouchUserId) {
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($getVouches->getVouches, $temp);
+        }
+        array_push($result, $getVouches);
+
+        return response()->json($result, 200);
+    }
+
+
     public function signup(Request $request)
     {
         $this->validate($request, [
@@ -74,7 +183,7 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'tokrn' => $token
+            'token' => $token
         ], 200);
     }
 
@@ -127,33 +236,5 @@ class UserController extends Controller
     }
 
 
-
-    public function updateUser(Request $request)
-    {
-        // TODO: get current user using auth
-        $user = User::find(1);
-
-        if (isset($request['type']))  $user->type = $request['type'];
-        if (isset($request['firstName']))  $user->first_name = $request['firstName'];
-        if (isset($request['lastName']))  $user->last_name = $request['lastName'];
-        if (isset($request['email']))  $user->email = $request['email'];
-        if (isset($request['phone']))  $user->phone = $request['phone'];
-        if (isset($request['dateOfBirth']))  $user->date_of_birth = $request['dateOfBirth'];
-        if (isset($request['gender']))  $user->gender = $request['gender'];
-        if (isset($request['address']))  $user->address = $request['address'];
-        if (isset($request['city']))  $user->city = $request['city'];
-        if (isset($request['score']))  $user->score = $request['score'];
-        if (isset($request['privacy']))  $user->privacy = $request['privacy'];
-        if (isset($request['level']))  $user->level = $request['level'];
-        $user->save();
-
-        return response()->json('successful operation',202);
-    }
-
-
-    public function uploadAvatar(Request $request)
-    {
-        
-    }
 
 }

@@ -9,14 +9,11 @@ class AreaController extends Controller
 {
     public function getAllAreas()
     {
-        // TODO: admin only
         return response()->json(Area::all(), 200);
     }
 
     public function createArea(Request $request)
     {
-        // TODO: admin only
-
         if (Area::where('locations', $request['locations'])->first()){
             return response()->json('Area location already exist',405);
         }
@@ -31,8 +28,6 @@ class AreaController extends Controller
 
     public function getArea($areaId)
     {
-        // TODO: admin only
-
         if ($area = Area::find($areaId)) {
             return response()->json($area,200);
         }
@@ -42,8 +37,6 @@ class AreaController extends Controller
 
     public function updateArea($areaId, Request $request)
     {
-        // TODO: admin only
-
         if (! $area = Area::find($areaId)) {
             return response()->json('Area not found',404);
         }
@@ -57,8 +50,6 @@ class AreaController extends Controller
 
     public function deleteArea($areaId)
     {
-        // TODO: admin only
-
         if (! $area = Area::find($areaId)) {
             return response()->json('Area not found',404);
         }

@@ -9,14 +9,18 @@ class CompanyController extends Controller
 {
     public function getAllCompanies($userId)
     {
-
-        $companies = Company::where("user_id", $userId)->get();
+        $companies = Company::where("user_id", $userId)->with('user')->get();
         return response()->json($companies, 200);
     }
 
     public function addCompany($userId, Request $request)
     {
-        // TODO: admin only
+        $this->validate($request, [
+            'companyNumber' => 'required',
+            'name' => 'required',
+            'location' => 'required',
+            'info' => 'required'
+        ]);
 
         if (Company::where('name', $request['name'])->first()){
             return response()->json('Company name already exist',405);
@@ -28,12 +32,16 @@ class CompanyController extends Controller
         $company->location = $request['location'];
         $company->company_number = $request['companyNumber'];
         $company->info = $request['info'];
-        $company->type = $request['type'];
-        $company->facebook_url = $request['facebookURL'];
-        $company->linkedIn_url = $request['linkedInURL'];
+        if (isset($request['type'])) $company->type = $request['type'];
+        if (isset($request['facebookURL'])) $company->facebook_url = $request['facebookURL'];
+        if (isset($request['linkedInURL'])) $company->linkedIn_url = $request['linkedInURL'];
         $company->save();
 
-        return response()->json('successful operation',200);
+        return response()->json(
+            [
+                'message'=> 'successful operation',
+                'data' => $company
+            ],200);
     }
 
     public function getCompany($userId, $companyId)
@@ -47,13 +55,6 @@ class CompanyController extends Controller
 
     public function updateCompany($userId, $companyId, Request $request)
     {
-        // TODO: add path to auth
-//        $user = JWTAuth::parseToken()->toUser();
-
-//        if (Company::find($companyId)->user_id != $user->id){
-//            return response()->json('Permission denied',400);
-//        }
-
         if (! $company = Company::where('id', $companyId)->where('user_id', $userId)->first()) {
             return response()->json('Company not found',404);
         }
@@ -67,13 +68,15 @@ class CompanyController extends Controller
         if (isset($request['linkedInURL'])) $company->description = $request['linkedInURL'];
         $company->save();
 
-        return response()->json('successful operation',202);
+        return response()->json(
+            [
+                'message'=> 'successful operation',
+                'data' => $company
+            ],200);
     }
 
     public function deleteCompany($userId, $companyId)
     {
-        // TODO: admin only
-
         if (! $company = Company::where('id', $companyId)->where('user_id', $userId)->first()) {
             return response()->json('Company not found',404);
         }

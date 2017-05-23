@@ -9,14 +9,11 @@ class StaticController extends Controller
 {
     public function getAllStatic()
     {
-        // TODO: admin only
         return response()->json(StaticModel::all(), 200);
     }
 
     public function addStatic(Request $request)
     {
-        // TODO: admin only
-
         if (StaticModel::where('name', $request['name'])->first()){
             return response()->json('Static name already exist',405);
         }
@@ -31,8 +28,6 @@ class StaticController extends Controller
 
     public function getStatic($staticId)
     {
-        // TODO: admin only
-
         if ($static = StaticModel::find($staticId)) {
             return response()->json($static,200);
         }
@@ -42,8 +37,6 @@ class StaticController extends Controller
 
     public function updateStatic($staticId, Request $request)
     {
-        // TODO: admin only
-
         if (! $static = StaticModel::find($staticId)) {
             return response()->json('Static not found',404);
         }
@@ -57,8 +50,6 @@ class StaticController extends Controller
 
     public function deleteStatic($staticId)
     {
-        // TODO: admin only
-
         if (! $static = StaticModel::find($staticId)) {
             return response()->json('Static not found',404);
         }

@@ -14,18 +14,23 @@ class Activity extends Model
     protected $table = 'activities';
 
     // many to many
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsTo('App\User');
     }
 
     public function category()
     {
-        return $this->hasOne('App\Category');
+        return $this->belongsTo('App\Category');
     }
 
     public function media()
     {
         return $this->hasMany('App\Media');
+    }
+
+    public function userActivities()
+    {
+        return $this->hasMany('App\UserActivity');
     }
 }

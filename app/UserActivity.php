@@ -4,24 +4,23 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class UserActivity extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'companies';
+    protected $table = 'user_activity';
 
-    public function media()
+    public function activity()
     {
-        return $this->hasMany('App\Media');
+        return $this->belongsTo('App\Activity');
     }
 
     public function user()
     {
         return $this->belongsTo('App\User');
     }
-
 
 }
