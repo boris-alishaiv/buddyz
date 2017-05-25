@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             'type' => 'buddy',
             'first_name' => 'buddy first',
             'last_name' => 'buddy last',
-            'email' => str_random(10).'@gmail.com',
+            'email' => 'buddy1@gmail.com',
             'password' => bcrypt('secret'),
             'gender' => 'male',
             'city' => str_random(10),
@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->insert([
             'id' => 2,
-            'type' => 'communityManager',
+            'type' => 'businessClient',
             'first_name' => 'buddy first 2',
             'last_name' => 'buddy last 2',
-            'email' => str_random(10).'@gmail.com',
+            'email' => 'buddy2@gmail.com',
             'password' => bcrypt('secret'),
             'gender' => 'male',
             'city' => str_random(10),
@@ -38,10 +38,22 @@ class DatabaseSeeder extends Seeder
 
         DB::table('users')->insert([
             'id' => 3,
-            'type' => 'buddy',
+            'type' => 'privateClient',
             'first_name' => 'buddy first 3',
             'last_name' => 'buddy last 3',
-            'email' => str_random(10).'@gmail.com',
+            'email' => 'buddy3@gmail.com',
+            'password' => bcrypt('secret'),
+            'gender' => 'male',
+            'city' => str_random(10),
+            'area_id' => 1,
+        ]);
+
+        DB::table('users')->insert([
+            'id' => 4,
+            'type' => 'admin',
+            'first_name' => 'buddy first 4',
+            'last_name' => 'buddy last 4',
+            'email' => 'buddy4@gmail.com',
             'password' => bcrypt('secret'),
             'gender' => 'male',
             'city' => str_random(10),

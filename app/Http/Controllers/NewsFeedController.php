@@ -8,12 +8,16 @@ use App\Post;
 use App\User;
 use App\Vouch;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class NewsFeedController extends Controller
 {
     public function getNewsFeed()
     {
 //        $user = JWTAuth::parseToken()->toUser();
+//        if ($user->type != "admin" && $user->type != "privateClient" && $user->type != "buddy") {
+//            return response()->json(['error' => 'Permission denied'], 400);
+//        }
         $user = User::find(1);
 
         $idArr = [];

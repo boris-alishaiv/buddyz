@@ -28,7 +28,7 @@ Route::get('/category', [
 
 Route::post('/category', [
     'uses' => 'CategoryController@addCategory',
-//    'middleware' => 'Admin'
+    'middleware' => 'Admin'
 ]);
 
 Route::get('/category/{categoryId}', [
@@ -37,27 +37,25 @@ Route::get('/category/{categoryId}', [
 
 Route::put('/category/{categoryId}', [
     'uses' => 'CategoryController@updateCategory',
-//    'middleware' => 'Admin'
+    'middleware' => 'Admin'
 ]);
 
 Route::delete('/category/{categoryId}', [
     'uses' => 'CategoryController@deleteCategory',
-//    'middleware' => 'Admin'
+    'middleware' => 'Admin'
 ]);
 
 
 /**
  * BuddyCards
- * BuddyCards
  */
 Route::post('/buddyCards/{userId}/addBuddyCard', [
     'uses' => 'BuddyCardController@createBuddyCard',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::get('/buddyCards/getTopBuddyCards', [
     'uses' => 'BuddyCardController@getTopBuddyCards',
-//    'middleware' => 'Admin'
 ]);
 
 Route::get('/buddyCards/{buddyCardId}', [
@@ -66,23 +64,22 @@ Route::get('/buddyCards/{buddyCardId}', [
 
 Route::put('/buddyCards/{buddyCardId}', [
     'uses' => 'BuddyCardController@updateBuddyCard',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::delete('/buddyCards/{buddyCardId}', [
     'uses' => 'BuddyCardController@deleteBuddyCard',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 
 Route::get('/buddyCards/{categoryId}/getBuddyCardsByCategory', [
     'uses' => 'BuddyCardController@getBuddyCardsByCategory',
-//    'middleware' => 'Admin'
 ]);
 
 Route::get('/buddyCards/{userId}/getBuddyCards', [
     'uses' => 'BuddyCardController@getBuddyCards',
-//    'middleware' => 'Admin'
+    'middleware' => 'AdminOrUser'
 ]);
 
 
@@ -90,28 +87,26 @@ Route::get('/buddyCards/{userId}/getBuddyCards', [
  * Company
  */
 Route::get('/companies/{userId}', [
-    'uses' => 'CompanyController@getAllCompanies',
-//    'middleware' => 'Admin'
+    'uses' => 'CompanyController@getAllCompanies'
 ]);
 
 Route::post('/companies/{userId}', [
     'uses' => 'CompanyController@addCompany',
-//    'middleware' => 'Admin'
+    'middleware' => 'AdminOrClient'
 ]);
 
 Route::get('/companies/{userId}/{companyId}', [
     'uses' => 'CompanyController@getCompany',
-//    'middleware' => 'Admin'
 ]);
 
 Route::put('/companies/{userId}/{companyId}', [
     'uses' => 'CompanyController@updateCompany',
-//    'middleware' => 'Admin'
+    'middleware' => 'AdminOrClient'
 ]);
 
 Route::delete('/companies/{userId}/{companyId}', [
     'uses' => 'CompanyController@deleteCompany',
-//    'middleware' => 'Admin'
+    'middleware' => 'AdminOrClient'
 ]);
 
 
@@ -119,28 +114,26 @@ Route::delete('/companies/{userId}/{companyId}', [
  * Medals
  */
 Route::get('/medals', [
-    'uses' => 'MedalController@getAllMedals',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'MedalController@getAllMedals'
 ]);
 
 Route::post('/medals', [
     'uses' => 'MedalController@addMedal',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 Route::get('/medals/{medalId}', [
-    'uses' => 'MedalController@getMedal',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'MedalController@getMedal'
 ]);
 
 Route::post('/medals/{medalId}', [
     'uses' => 'MedalController@updateMedal',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 Route::delete('/medals/{medalId}', [
     'uses' => 'MedalController@deleteMedal',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 
@@ -154,7 +147,7 @@ Route::get('/static', [
 
 Route::post('/static', [
     'uses' => 'StaticController@addStatic',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 Route::get('/static/{staticId}', [
@@ -164,12 +157,12 @@ Route::get('/static/{staticId}', [
 
 Route::post('/static/{staticId}', [
     'uses' => 'StaticController@updateStatic',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 Route::delete('/static/{staticId}', [
     'uses' => 'StaticController@deleteStatic',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'Admin'
 ]);
 
 
@@ -178,27 +171,27 @@ Route::delete('/static/{staticId}', [
  */
 Route::get('/vouches', [
     'uses' => 'VouchController@getAllVouches',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::post('/vouch/{userId}', [
     'uses' => 'VouchController@createVouch',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::delete('/vouch/{userId}', [
     'uses' => 'VouchController@deleteVouch',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::put('/vouch/{userId}/{vouchId}', [
     'uses' => 'VouchController@test',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::post('/vouch/{userId}/{vouchId}', [
     'uses' => 'VouchController@changeVouchStatus',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrUser'
 ]);
 
 
@@ -206,28 +199,27 @@ Route::post('/vouch/{userId}/{vouchId}', [
  * UserCategories
  */
 Route::get('/userCategories/{userId}/match', [
-    'uses' => 'UserCategoryController@getUserCategories',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'UserCategoryController@getUserCategories'
 ]);
 
 Route::post('/userCategories/{userId}/match', [
     'uses' => 'UserCategoryController@addUserCategories',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::get('/userCategories/{userCategoryId}', [
     'uses' => 'UserCategoryController@getUserCategory',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::put('/userCategories/{userCategoryId}',[
     'uses' => 'UserCategoryController@updateUserCategory',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::delete('/userCategories/{userCategoryId}', [
     'uses' => 'UserCategoryController@deleteUserCategory',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 
@@ -236,37 +228,34 @@ Route::delete('/userCategories/{userCategoryId}', [
  */
 Route::post('/activities/{userId}/addActivity', [
     'uses' => 'ActivityController@addNewActivity',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrClient'
 ]);
 
 Route::get('/activities/getActivities', [
-    'uses' => 'ActivityController@getAllActivities',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'ActivityController@getAllActivities'
 ]);
 
 Route::get('/activities/{userId}/getMyActivities', [
     'uses' => 'ActivityController@getUserActivities',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'AdminOrClient'
 ]);
 
 Route::get('/activities/{activityId}', [
-    'uses' => 'ActivityController@getActivity',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'ActivityController@getActivity'
 ]);
 
 Route::put('/activities/{activityId}', [
     'uses' => 'ActivityController@editActivity',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::delete('/activities/{activityId}', [
     'uses' => 'ActivityController@deleteActivity',
-//    'middleware' => 'auth.jwt'
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::post('/activities/{activityId}/setViewer', [
-    'uses' => 'ActivityController@setViewer',
-//    'middleware' => 'auth.jwt'
+    'uses' => 'ActivityController@setViewer'
 ]);
 
 
@@ -334,17 +323,17 @@ Route::get('/users/{userId}/getCommunity', [
  */
 Route::post('/comments/{userId}/{postId}/createComment', [
     'uses' => 'CommentController@createComment',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::put('/comments/{userId}/{commentId}', [
     'uses' => 'CommentController@updateComment',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::delete('/comments/{userId}/{commentId}', [
     'uses' => 'CommentController@deleteComment',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 /**
@@ -352,12 +341,12 @@ Route::delete('/comments/{userId}/{commentId}', [
  */
 Route::post('/setReview/{userId}', [
     'uses' => 'ReviewController@createReview',
-//    'middleware' => ''
+    'middleware' => 'AdminOrClient'
 ]);
 
 Route::put('/setReview/{userId}/{reviewId}', [
     'uses' => 'ReviewController@editReview',
-//    'middleware' => ''
+    'middleware' => 'AdminOrClient'
 ]);
 
 
@@ -366,7 +355,7 @@ Route::put('/setReview/{userId}/{reviewId}', [
  */
 Route::post('/setLike/{userId}/{postId}', [
     'uses' => 'LikeController@createLike',
-//    'middleware' => ''
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 
@@ -375,22 +364,22 @@ Route::post('/setLike/{userId}/{postId}', [
  */
 Route::post('/posts/{userId}', [
     'uses' => 'PostController@createPost',
-//    'middleware' => ''
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::get('/post/{userId}/{postId}', [
     'uses' => 'PostController@getPost',
-//    'middleware' => ''
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::put('/post/{userId}/{postId}', [
     'uses' => 'PostController@editPost',
-//    'middleware' => ''
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::delete('/post/{userId}/{postId}', [
     'uses' => 'PostController@deletePost',
-//    'middleware' => ''
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 
@@ -399,22 +388,22 @@ Route::delete('/post/{userId}/{postId}', [
  */
 Route::get('/userMedals/{userId}', [
     'uses' => 'UserMedalController@getAllBuddyMedal',
-//    'middleware' => ''
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::post('/userMedals/{userId}', [
     'uses' => 'UserMedalController@createBuddyMedal',
-//    'middleware' => ''
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::get('/userMedals/{userId}/{medalId}', [
     'uses' => 'UserMedalController@getBuddyMedal',
-//    'middleware' => ''
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::delete('/userMedals/{userId}/{medalId}', [
     'uses' => 'UserMedalController@deleteBuddyMedal',
-//    'middleware' => ''
+    'middleware' => 'AdminOrUser'
 ]);
 
 
@@ -423,41 +412,47 @@ Route::delete('/userMedals/{userId}/{medalId}', [
  */
 Route::get('/userActivities/{userId}/getMyUserActivities', [
     'uses' => 'UserActivityController@getUsersUserActivity',
-//    'middleware' => ''
+    'middleware' => 'AdminOrBuddy'
 ]);
 
 Route::post('/userActivities/{userId}/{activityId}/addUserActivity', [
     'uses' => 'UserActivityController@addUserActivity',
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::put('/userActivities/{userActivityId}/refuseToBuddyRequest', [
-    'uses' => 'UserActivityController@refuseToBuddyRequest',
+    'uses' => 'UserActivityController@refuseToBuddyRequest'
 ]);
 
 Route::put('/userActivities/{userActivityId}/refuseToClientRequest', [
-    'uses' => 'UserActivityController@refuseToClientRequest',
+    'uses' => 'UserActivityController@refuseToClientRequest'
 ]);
 
 Route::put('/userActivities/{userActivityId}/acceptBuddyRequest', [
-    'uses' => 'UserActivityController@acceptBuddyRequest',
+    'uses' => 'UserActivityController@acceptBuddyRequest'
 ]);
 
 Route::put('/userActivities/{userActivityId}/acceptClientRequest', [
-    'uses' => 'UserActivityController@acceptClientRequest',
+    'uses' => 'UserActivityController@acceptClientRequest'
 ]);
 
 Route::get('/userActivities/{userActivitiesId}', [
     'uses' => 'UserActivityController@getUserActivity',
-//    'middleware' => ''
+    'middleware' => 'auth.jwt'
 ]);
 
 Route::delete('/userActivities/{userActivitiesId}', [
     'uses' => 'UserActivityController@deleteUserActivity',
-//    'middleware' => ''
+    'middleware' => 'auth.jwt'
 ]);
 
+
+
+/**
+ * News Feed
+ */
 Route::get('/newsFeed', [
     'uses' => 'NewsFeedController@getNewsFeed',
-//    'middleware' => ''
+    'middleware' => 'auth.jwt'
 ]);
 

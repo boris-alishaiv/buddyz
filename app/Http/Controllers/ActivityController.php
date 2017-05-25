@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Activity;
 use App\User;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class ActivityController extends Controller
 {
@@ -190,6 +191,11 @@ class ActivityController extends Controller
             return response()->json('Activity not found',404);
         }
 
+        $user = JWTAuth::parseToken()->toUser();
+        if ($user->type != "admin" && $user->id != $activity->user_id) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
         if (isset($request['categoryId']))  $activity->category_id = $request['categoryId'];
         if (isset($request['userId']))  $activity->user_id = $request['userId'];
         if (isset($request['time'])) $activity->time = $request['time'];
@@ -217,6 +223,11 @@ class ActivityController extends Controller
     {
         if (! $activity = Activity::find($activityId)) {
             return response()->json('Activity not found',404);
+        }
+
+        $user = JWTAuth::parseToken()->toUser();
+        if ($user->type != "admin" && $user->id != $activity->user_id) {
+            return response()->json(['error' => 'Permission denied'], 400);
         }
 
         $activity->delete();

@@ -170,11 +170,23 @@ class BuddyCardController extends Controller
 
     public function getBuddyCards($userId)
     {
-        $buddyCards = BuddyCard::where("user_id", $userId)->get();
-        return response()->json([
-            'message' => "successful operation",
-            'data'    => $buddyCards
-        ],200);
+        $result = [];
+        foreach (BuddyCard::where("user_id", $userId)->get() as $buddyCard) {
+            $category = $buddyCard->category;
+            $responseObject = new \stdClass();
+            $responseObject->cardId = $buddyCard->id;
+            $responseObject->createAt = $buddyCard->id;
+            $responseObject->price = $buddyCard->id;
+            $responseObject->description = $buddyCard->id;
+            $responseObject->schedule = $buddyCard->id;
+            $responseObject->category = new \stdClass();;
+            $responseObject->category->categoryId = $category->id;
+            $responseObject->category->logo = $category->logo;
+            $responseObject->category->name = $category->name;
+            array_push($result, $responseObject);
+        }
+
+        return response()->json($result,200);
     }
 
 }

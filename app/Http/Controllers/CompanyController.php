@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\User;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -15,6 +16,10 @@ class CompanyController extends Controller
 
     public function addCompany($userId, Request $request)
     {
+        if (User::find($userId)->type != "businessClient" && User::find($userId)->type != "admin") {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
         $this->validate($request, [
             'companyNumber' => 'required',
             'name' => 'required',

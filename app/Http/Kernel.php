@@ -52,6 +52,16 @@ class Kernel extends HttpKernel
             'adminOrUser' => \App\Http\Middleware\AdminOrUser::class,
         ],
 
+        'AdminOrClient' => [
+            'auth.jwt' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+            'adminOrClient' => \App\Http\Middleware\AdminOrClient::class,
+        ],
+
+        'AdminOrBuddy' => [
+            'auth.jwt' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+            'adminOrBuddy' => \App\Http\Middleware\AdminOrBuddy::class,
+        ],
+
     ];
 
     /**

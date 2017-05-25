@@ -40,6 +40,10 @@ class ReviewController extends Controller
             return response()->json('Review not found',404);
         }
 
+        if ($review->post_user_id != $userId) {
+            return response()->json('Permission denied',404);
+        }
+
         if (isset($request['content']))  $review->content = $request['content'];
         if (isset($request['getUserId'])) $review->get_user_id = $request['getUserId'];
         if (isset($request['rating'])) $review->rating = $request['rating'];

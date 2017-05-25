@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class PostController extends Controller
 {
@@ -30,15 +31,18 @@ class PostController extends Controller
 
     public function getPost($userId, $postId)
     {
-        $post = Post::find($postId)->with('comments', 'user', 'media')->get();
+        $userType = JWTAuth::parseToken()->toUser()->type;
+        if ($userType != "privateClient" && $userType != "buddy" && $userType != "admin" ) {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
 
-        if (!$post ) {
+        if (! $post = Post::find($postId) ) {
             return response()->json('Post not found',404);
         }
 
         return response()->json([
             'message' => "successful operation",
-            'data'    => $post
+            'data'    => $post->with('comments', 'user', 'media')->get()
         ],200);
 
     }

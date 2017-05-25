@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Vouch;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class VouchController extends Controller
 {
 
     public function getAllVouches()
     {
+        if (JWTAuth::parseToken()->toUser()->type != "admin") {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
         return response()->json(Vouch::all(), 200);
     }
 

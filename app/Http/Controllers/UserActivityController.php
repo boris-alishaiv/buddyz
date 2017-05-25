@@ -6,6 +6,7 @@ use App\Activity;
 use App\User;
 use App\UserActivity;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class UserActivityController extends Controller
 {
@@ -88,6 +89,11 @@ class UserActivityController extends Controller
 
     public function getUserActivity($userActivityId)
     {
+        $user = JWTAuth::parseToken()->toUser();
+        if ($user->type != "admin" && $user->type != "buddy") {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
         if (! $userActivity = UserActivity::find($userActivityId)) {
             return response()->json('Invalid UserActivity id',404);
         }
@@ -98,8 +104,17 @@ class UserActivityController extends Controller
 
     public function deleteUserActivity($userActivityId)
     {
+        $user = JWTAuth::parseToken()->toUser();
+        if ($user->type != "admin" && $user->type != "buddy") {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
         if (! $userActivity = UserActivity::find($userActivityId)) {
             return response()->json('Invalid UserActivity id',404);
+        }
+
+        if ($user->id != $userActivity->user_id) {
+            return response()->json(['error' => 'Permission denied'], 400);
         }
 
         $userActivity->delete();
