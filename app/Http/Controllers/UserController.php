@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\BuddyCard;
+use App\Company;
+use App\Media;
+use App\Review;
 use App\User;
+use App\UserActivity;
+use App\UserCategory;
+use App\UserMedal;
 use App\Vouch;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -32,16 +39,133 @@ class UserController extends Controller
         return response()->json("uploadProfileImage needs implementation", 200);
     }
 
-    public function setUserAbout($userId)
+    public function watchProfile($activeUserId, $userId)
     {
+        $user = User::find($userId);
+        $askedUser = User::find($activeUserId);
+
+        if (! $user  || ! $askedUser || $user->type == 'admin') {
+            return response()->json(['error' => 'Permission denied'], 400);
+        }
+
+        $result = new \stdClass();
+        if ($askedUser->type == 'businessClient') {
+            return response()->json($result, 200);
+        }
 
 
-        return response()->json("setUserAbout needs implementation", 200);
+        $result->firstName = $user->first_name;
+        $result->lastName = $user->last_name;
+        $result->profilePicture = $user->profile_picture;
+        $result->vouch = $user->first_name;
+        $result->verification = Vouch::where('user_id_post', $activeUserId)->where('user_id_get', $userId)->first() ? true : false;
+        $result->about = $user->about;
+
+
+        if ($user->type == 'buddy' || $askedUser->type == 'admin') {
+            $result->score = $user->score;
+            $result->userCategories = UserCategory::where('user_id', $userId)->where('type', 'skill')->with('category')->get();
+            $result->media = Media::where('user_id', $userId)->get();
+            $result->reviews = Review::where('get_user_id', $userId)->with('postUser')->get();
+            $result->medals = UserMedal::where("user_id", $userId)->with('medal')->get();
+        } elseif ($user->type == 'privateClient') {
+            $result->activities = UserActivity::where('user_id', $userId)->get();
+        } elseif ($user->type == 'businessClient') {
+            $result->company = Company::where('user_id', $userId)->get();
+            $result->activities = UserActivity::where('user_id', $userId)->get();
+            return response()->json($result, 200);
+        }
+
+        // community
+        $vouchedUsers = Vouch::where('user_id_post', $userId)->get(['user_id_get']);
+        $result->postVouches = [];
+        $idArr = [];
+
+        foreach ($vouchedUsers as $vouchUserId) {
+            array_push($idArr, $vouchUserId->user_id_get);
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($result->postVouches, $temp);
+        }
+
+        $vouchedUsers = Vouch::where('user_id_get', $userId)->whereNotIn('user_id_post',$idArr)->get();
+        $result->getVouches = [];
+        foreach ($vouchedUsers as $vouchUserId) {
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($result->getVouches, $temp);
+        }
+
+        return response()->json($result, 200);
     }
 
-    public function watchProfile($userId)
+    public function myProfile($userId)
     {
-        return response()->json("watchProfile needs implementation", 200);
+        $user = User::find($userId);
+        $result = [];
+        $result['user'] = $user;
+
+        if ($user->type == "buddy") {
+            $result['userCategories'] = UserCategory::where('user_id', $userId)->where('type', 'skill')->get();
+            $result['buddyCards'] = BuddyCard::where('user_id', $userId)->get();
+            $result['media'] = Media::where('user_id', $userId)->get();
+            $result['reviews'] = Review::where('get_user_id', $userId)->with('postUser')->get();
+            $result['medals'] = UserMedal::where("user_id", $userId)->with('medal')->get();
+        } elseif ($user->type == "privateClient") {
+            $result['activities'] = UserActivity::where('user_id', $userId)->get();
+        } elseif ($user->type == "businessClient") {
+            $result['company'] = Company::where('user_id', $userId)->get();
+        }
+
+        $vouchedUsers = Vouch::where('user_id_post', $userId)->get(['user_id_get']);
+        $postVouches = new \stdClass();
+        $postVouches->postVouches = [];
+        $idArr = [];
+
+        foreach ($vouchedUsers as $vouchUserId) {
+            array_push($idArr, $vouchUserId->user_id_get);
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($postVouches->postVouches, $temp);
+        }
+        array_push($result, $postVouches);
+
+        $vouchedUsers = Vouch::where('user_id_get', $userId)->whereNotIn('user_id_post',$idArr)->get();
+        $getVouches = new \stdClass();
+        $getVouches->getVouches = [];
+
+        foreach ($vouchedUsers as $vouchUserId) {
+            $vouchedUser = User::find($vouchUserId->user_id_get);
+            $temp = new \stdClass();
+            $temp->id = $vouchedUser->id;
+            $temp->type = $vouchedUser->id;
+            $temp->firstName = $vouchedUser->id;
+            $temp->lastName = $vouchedUser->id;
+            $temp->profilePicture = $vouchedUser->id;
+            $temp->verification = $vouchedUser->id;
+            array_push($getVouches->getVouches, $temp);
+        }
+        array_push($result, $getVouches);
+
+        return response()->json($result, 200);
     }
 
     public function editUser($userId)
@@ -156,7 +280,8 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'successful operation',
-            'token' => $token
+            'token' => $token,
+            'user' => $user
         ], 200);
     }
 

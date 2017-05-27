@@ -12,4 +12,10 @@ class UserMedal extends Model
      * @var string
      */
     protected $table = 'user_medals';
+
+    public function medal()
+    {
+        return $this->belongsTo('App\Medal', 'medal_id');
+    }
+
 }

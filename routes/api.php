@@ -264,7 +264,7 @@ Route::post('/activities/{activityId}/setViewer', [
  */
 Route::get('/users', [
     'uses' => 'UserController@getAllUsers',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'Admin'
 ]);
 
 Route::post('/user', [
@@ -284,7 +284,7 @@ Route::post('/users/{userId}/profile/about', [
 ]);
 
 Route::get('/users/{userId}/profile/myProfile', [
-    'uses' => 'UserController@setUserAbout',
+    'uses' => 'UserController@myProfile',
 ]);
 
 Route::post('/users/{userId}/profile/myProfile', [
@@ -296,25 +296,25 @@ Route::put('/user', [
 //    'middleware' => 'AdminOrUser'
 ]);
 
-Route::put('/users/{activeUserId}/{userId}/watchProfile', [
+Route::get('/users/{activeUserId}/{userId}/watchProfile', [
     'uses' => 'UserController@watchProfile',
 //    'middleware' => 'AdminOrUser'
 ]);
 
 Route::put('/user/{userId}', [
     'uses' => 'UserController@editUser',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrUser'
 ]);
 
 Route::delete('/user/{userId}', [
     'uses' => 'UserController@deleteUser',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrUser'
 ]);
 
 
 Route::get('/users/{userId}/getCommunity', [
     'uses' => 'UserController@getCommunity',
-//    'middleware' => 'AdminOrUser'
+    'middleware' => 'AdminOrUser'
 ]);
 
 

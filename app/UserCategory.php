@@ -12,4 +12,10 @@ class UserCategory extends Model
      * @var string
      */
     protected $table = 'user_category';
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
 }
